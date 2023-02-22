@@ -1,0 +1,47 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /saas-bps
+
+app:
+  id: saas-bps-core
+
+apollo:
+  meta: http://10.148.240.4:8080
+  cacheDir: ./apollo
+  bootstrap:
+    cluster: default
+    enabled: true
+    namespaces: application,repository
+
+swagger:
+  enabled: true
+
+spring:
+  application:
+    name: saas-bps-core
+  messages:
+    basename: i18n/message
+
+management:
+  server:
+    port: -1
+
+# com.sf.saas.bps.core.service.config.mybatis-plus相关配置
+mybatis-plus:
+  # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  # 以下配置均有默认值,可以不设置
+  global-config:
+    banner: false
+    db-config:
+      # AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: auto
+  configuration:
+    log-impl: ${mybatis-plus-log-impl}
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # 关闭二级缓存
+    cache-enabled: false
+
+

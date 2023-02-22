@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>saas-iss-bps</artifactId>
+        <groupId>com.sf.saas</groupId>
+        <version>1.0</version>
+    </parent>
+    <modules>
+        <module>saas-iss-bps-core-api</module>
+        <module>saas-iss-bps-core-service</module>
+        <module>saas-iss-bps-core-dto</module>
+        <module>saas-iss-bps-core-common</module>
+        <module>saas-iss-bps-core-dao</module>
+        <module>saas-iss-bps-core-manager</module>
+    </modules>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <artifactId>saas-iss-bps-core</artifactId>
+
+
+
+</project>

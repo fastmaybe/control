@@ -1,0 +1,1 @@
+cd /app/deploy && java ${JAVA_OPTS} ${JAVA_AGENT_OPTS} -jar /app/deploy/lib/saas-iss-bps.jar --spring.config.location=/app/deploy/conf/

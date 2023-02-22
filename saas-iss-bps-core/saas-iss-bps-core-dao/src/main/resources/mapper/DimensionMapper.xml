@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.saas.bps.core.dao.mapper.DimensionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sf.saas.bps.core.dao.entity.Dimension">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="dimension_key" property="dimensionKey" />
+        <result column="type" property="type" />
+        <result column="dictionary_key_value" property="dictionaryKeyValue" />
+        <result column="group_flag" property="groupFlag" />
+        <result column="sum_flag" property="sumFlag" />
+        <result column="import_flag" property="importFlag" />
+        <result column="statistics_condition_flag" property="statisticsConditionFlag" />
+        <result column="unit" property="unit" />
+        <result column="sorting" property="sorting" />
+        <result column="create_time" property="createTime" />
+        <result column="creator" property="creator" />
+        <result column="update_time" property="updateTime" />
+        <result column="updater" property="updater" />
+        <result column="require_flag" property="requireFlag" />
+        <result column="currency_flag" property="currencyFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, dimension_key, type, dictionary_key_value, group_flag, sum_flag, import_flag, statistics_condition_flag, unit, sorting, create_time, creator, update_time, updater, require_flag, currency_flag
+    </sql>
+
+</mapper>

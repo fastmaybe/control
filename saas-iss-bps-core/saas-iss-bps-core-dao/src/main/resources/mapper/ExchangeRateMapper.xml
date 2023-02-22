@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.saas.bps.core.dao.mapper.ExchangeRateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sf.saas.bps.core.dao.entity.ExchangeRate">
+        <id column="id" property="id" />
+        <result column="source_currency_code" property="sourceCurrencyCode" />
+        <result column="dest_currency_code" property="destCurrencyCode" />
+        <result column="valid_tm" property="validTm" />
+        <result column="invalid_tm" property="invalidTm" />
+        <result column="delete_flg" property="deleteFlg" />
+        <result column="rate" property="rate" />
+        <result column="creator" property="creator" />
+        <result column="create_time" property="createTime" />
+        <result column="updater" property="updater" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, source_currency_code, dest_currency_code, valid_tm, invalid_tm, delete_flg, rate, creator, create_time, updater, update_time
+    </sql>
+
+</mapper>

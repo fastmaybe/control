@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sf.saas.bps.core.dao.mapper.StrategyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sf.saas.bps.core.dao.entity.Strategy">
+        <id column="id" property="id" />
+        <result column="tenant_id" property="tenantId" />
+        <result column="name" property="name" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="begin_date" property="beginDate" />
+        <result column="end_date" property="endDate" />
+        <result column="type" property="type" />
+        <result column="enable_date" property="enableDate" />
+        <result column="description" property="description" />
+        <result column="creator" property="creator" />
+        <result column="create_time" property="createTime" />
+        <result column="updater" property="updater" />
+        <result column="update_time" property="updateTime" />
+        <result column="positive" property="positive" />
+        <result column="priority" property="priority" />
+        <result column="tip_flag" property="tipFlag" />
+    </resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="PageResultMap" type="com.sf.saas.bps.core.dto.bo.StrategyBo">
+        <id column="id" property="id" />
+        <result column="tenant_id" property="tenantId" />
+        <result column="name" property="name" />
+        <result column="status" property="status" />
+        <result column="version" property="version" />
+        <result column="begin_date" property="beginDate" />
+        <result column="end_date" property="endDate" />
+        <result column="type" property="type" />
+        <result column="enable_date" property="enableDate" />
+        <result column="description" property="description" />
+        <result column="creator" property="creator" />
+        <result column="create_time" property="createTime" />
+        <result column="updater" property="updater" />
+        <result column="update_time" property="updateTime" />
+        <result column="positive" property="positive" />
+        <result column="priority" property="priority" />
+        <result column="tip_flag" property="tipFlag" />
+        <collection ofType="com.sf.saas.bps.core.dto.vo.StrategyDimensionVo" property="dimensionList">
+            <result column="strategy_condition_id" property="id" />
+            <result column="strategy_id" property="strategyId" />
+            <result column="dimension" property="dimension" />
+            <result column="function" property="function" />
+            <result column="parameter" property="parameter" />
+            <result column="parameter_display" property="parameterDisplay" />
+            <result column="currency" property="currency" />
+            <result column="tenant_id" property="tenantId" />
+            <result column="creator1" property="creator" />
+            <result column="create_time1" property="createTime" />
+            <result column="updater1" property="updater" />
+            <result column="update_time1" property="updateTime" />
+        </collection>
+        <collection ofType="com.sf.saas.bps.core.dto.vo.StrategyRemarkVo" property="tipContent">
+            <result column="strategy_remark_id" property="id" />
+            <result column="strategy_id2" property="strategyId" />
+            <result column="remark" property="remark" />
+            <result column="lang" property="lang" />
+            <result column="tenant_id" property="tenantId" />
+            <result column="creator2" property="creator" />
+            <result column="create_time2" property="createTime" />
+            <result column="updater2" property="updater" />
+            <result column="update_time2" property="updateTime" />
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, status, version, begin_date, end_date, type, enable_date, description, creator, create_time, updater, update_time, positive, priority,tip_flag
+    </sql>
+
+    <select id="queryByParam" parameterType="com.sf.saas.bps.core.dto.req.StrategyVoQueryReq" resultMap="PageResultMap">
+        select stra.*,
+            sc.id as strategy_condition_id,
+            sc.strategy_id,
+            sc.dimension,
+            sc.`function`,
+            sc.parameter,
+            sc.parameter_display,
+            sc.currency,
+            sc.creator as creator1,
+            sc.create_time as create_time1,
+            sc.updater as updater1,
+            sc.update_time as update_time1,
+            sr.id as strategy_remark_id,
+            sr.strategy_id as strategy_id2,
+            sr.lang,
+            sr.remark,
+            sr.creator as creator2,
+            sr.create_time as create_time2,
+            sr.updater as updater2,
+            sr.update_time as update_time2
+            from
+        (select
+            st.id,
+            st.`name`,
+            st.`status`,
+            st.version,
+            st.begin_date,
+            st.end_date,
+            st.type,
+            st.enable_date,
+            st.description,
+            st.creator,
+            st.create_time,
+            st.updater,
+            st.update_time,
+            st.positive,
+            st.priority,
+            st.tip_flag,
+            st.tenant_id
+        FROM
+            bps_strategy st
+        <where>
+            st.tenant_id = #{tenantId}
+            <if test="name != null and name != ''">
+                and st.`name` like concat(concat('%', #{name}), '%')
+            </if>
+            <if test="validDate != null">
+                and ((st.begin_date &lt;= #{validDate} and st.end_date &gt;= #{validDate}) or (st.begin_date is null) )
+            </if>
+            <if test="type != null and type != ''">
+                and st.type = #{type}
+            </if>
+            <if test="status != null">
+                and st.`status` = #{status}
+            </if>
+            <if test="strategyIds != null and strategyIds.size()>0">
+                and st.id in
+                <foreach collection="strategyIds" index="index" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        LIMIT #{offset},#{pageSize}
+        ) stra
+
+        LEFT JOIN bps_strategy_condition sc ON stra.id = sc.strategy_id
+        LEFT JOIN bps_strategy_remark sr ON stra.id = sr.strategy_id
+        order by stra.id desc,sc.id, sr.id
+    </select>
+
+    <select id="queryRelationById" parameterType="java.lang.Long" resultMap="PageResultMap">
+        select stra.*,
+            sc.id as strategy_condition_id,
+            sc.strategy_id,
+            sc.dimension,
+            sc.`function`,
+            sc.parameter,
+            sc.parameter_display,
+            sc.currency,
+            sc.creator as creator1,
+            sc.create_time as create_time1,
+            sc.updater as updater1,
+            sc.update_time as update_time1,
+            sr.id as strategy_remark_id,
+            sr.strategy_id as strategy_id2,
+            sr.lang,
+            sr.remark,
+            sr.creator as creator2,
+            sr.create_time as create_time2,
+            sr.updater as updater2,
+            sr.update_time as update_time2
+            from
+        (select
+            st.id,
+            st.`name`,
+            st.`status`,
+            st.version,
+            st.begin_date,
+            st.end_date,
+            st.type,
+            st.enable_date,
+            st.description,
+            st.creator,
+            st.create_time,
+            st.updater,
+            st.update_time,
+            st.positive,
+            st.priority,
+            st.tip_flag,
+            st.tenant_id
+        FROM
+            bps_strategy st
+        <where>
+            st.id = #{id}
+        </where>
+        ) stra
+
+        LEFT JOIN bps_strategy_condition sc ON stra.id = sc.strategy_id
+        LEFT JOIN bps_strategy_remark sr ON stra.id = sr.strategy_id
+        order by sc.id, sr.id
+    </select>
+
+    <select id="loadStrategyByTenantState" resultMap="PageResultMap">
+        SELECT
+        st.id,
+        st.`name`,
+        st.`status`,
+        st.version,
+        st.begin_date,
+        st.end_date,
+        st.type,
+        st.enable_date,
+        st.description,
+        st.creator,
+        st.create_time,
+        st.updater,
+        st.update_time,
+        st.positive,
+        st.priority,
+        st.tip_flag,
+        st.tenant_id,
+        sc.id AS strategy_condition_id,
+        sc.strategy_id,
+        sc.dimension,
+        sc.`function`,
+        sc.parameter,
+        sc.currency,
+        sc.creator AS creator1,
+        sc.create_time AS create_time1,
+        sc.updater AS updater1,
+        sc.update_time AS update_time1,
+        sr.id AS strategy_remark_id,
+        sr.strategy_id AS strategy_id2,
+        sr.lang,
+        sr.remark,
+        sr.creator AS creator2,
+        sr.create_time AS create_time2,
+        sr.updater AS updater2,
+        sr.update_time AS update_time2
+        FROM
+        bps_strategy st
+        LEFT JOIN bps_strategy_condition sc ON st.id = sc.strategy_id
+        LEFT JOIN bps_strategy_remark sr ON st.id = sr.strategy_id
+        <where>
+            <if test="tenantId != null and tenantId != ''">
+                st.tenant_id = #{tenantId}
+            </if>
+            <if test="status != null">
+                and st.`status` = #{status}
+            </if>
+        </where>
+
+    </select>
+
+</mapper>
